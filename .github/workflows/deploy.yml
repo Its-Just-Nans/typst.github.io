@@ -28,12 +28,12 @@ jobs:
             url: ${{ steps.deployment.outputs.page_url }}
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v4
-            - name: Checkout
+            - name: Checkout typst
               uses: actions/checkout@v4
               with:
                   repository: "typst/typst"
                   path: "typst"
+            # checkout typst-jp repository
             - uses: actions/checkout@v4
               with:
                   repository: "typst-jp/typst-jp.github.io"
@@ -62,10 +62,12 @@ jobs:
             # cleanuping website
             - name: Cleanup website
               run: |
+                  # delete the html redirection to /docs
                   rm -rf typst-jp/website/public/index.html
+                  # delete the js redirection to /docs
                   sed -i '29,31d' typst-jp/website/src/index.tsx
-                  mv vite.config.ts typst-jp/website/vite.config.ts
-                  cat typst-jp/website/vite.config.ts
+                  # change url
+                  sed -i 's|https://typst-jp.github.io/|https://typst-github-io.n4n5.dev/|g' typst-jp/website/vite.config.ts
             - name: bun install and build
               run: cd typst-jp/website && bun install --frozen-lockfile && bun run build || true
             # post build steps
