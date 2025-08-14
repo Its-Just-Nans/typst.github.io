@@ -14,3 +14,4 @@ It is usefull? I guess it could
 - Banner for Japanese translations error
 - Button to come at the home page is redirecting to "/docs"
 - Some text still in japanese
+- Search bar not working for now
