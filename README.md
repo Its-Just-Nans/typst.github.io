@@ -7,7 +7,7 @@
 
 It is slow? Absolutely
 
-It is usefull? I guess it could
+It is useful? I guess it could
 
 ## Known bugs
 

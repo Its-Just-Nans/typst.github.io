@@ -63,11 +63,15 @@ jobs:
             - name: Cleanup website
               run: |
                   rm -rf typst-jp/website/public/index.html
-                  mv index.tsx typst-jp/website/src/index.tsx
+                  sed -i '29,31d' typst-jp/website/src/index.tsx
                   mv vite.config.ts typst-jp/website/vite.config.ts
                   cat typst-jp/website/vite.config.ts
             - name: bun install and build
               run: cd typst-jp/website && bun install --frozen-lockfile && bun run build || true
+            # post build steps
+            - name: Post build steps
+              run: |
+                cp -r typst/docs/assets/* typst-jp/website/dist/assets/
             - name: Upload artifact
               uses: actions/upload-pages-artifact@v3
               with:
