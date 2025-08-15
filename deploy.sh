@@ -5,16 +5,21 @@ set -x
 if [ ! -d "typst" ]; then
     echo "Typst directory does not exist. Cloning repository..."
     git clone https://github.com/typst/typst.git
+fi
+if [ ! -d "typst/assets" ]; then
     cd typst || exit 1
     cargo run --package typst-docs -- --assets-dir assets/docs --out-file assets/docs.json --base /en/
     cd ..
 fi
 
+
 if [ ! -d "typst-jp.github.io" ]; then
     echo "Website directory does not exist. Cloning repository..."
     git clone https://github.com/typst-jp/typst-jp.github.io.git
+fi
+if [ ! -d "typst-jp.github.io/assets" ]; then
     cd typst-jp.github.io || exit 1
-    cargo run --package typst-docs -- --assets-dir assets/docs --out-file assets/docs.json --base /en/
+    cargo run --package typst-docs -- --assets-dir assets/docs --out-file assets/docs.json --base /jp/
     cd ..
 fi
 
