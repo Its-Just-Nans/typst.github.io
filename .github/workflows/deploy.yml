@@ -28,6 +28,7 @@ jobs:
             url: ${{ steps.deployment.outputs.page_url }}
         runs-on: ubuntu-latest
         steps:
+            - uses: actions/checkout@v4
             - name: Checkout typst
               uses: actions/checkout@v4
               with:
@@ -44,36 +45,10 @@ jobs:
               with:
                   toolchain: stable
             - uses: oven-sh/setup-bun@v2
-            # build docs.json
+            # build website
             - name: Build docs.json
               run: |
-                  cd typst/docs
-                  cargo run --release > docs.json
-            # move docs.json to the website directory
-            - name: Move docs.json
-              run: |
-                  mkdir -p typst-jp/assets
-                  mv typst/docs/docs.json typst-jp/assets/docs.json
-            # move assets to the website directory
-            - name: Move assets
-              run: |
-                  mkdir -p typst-jp/assets
-                  cp -r typst/docs/assets/ typst-jp/assets/docs/
-            # cleanuping website
-            - name: Cleanup website
-              run: |
-                  # delete the html redirection to /docs
-                  rm -rf typst-jp/website/public/index.html
-                  # delete the js redirection to /docs
-                  sed -i '29,31d' typst-jp/website/src/index.tsx
-                  # change url
-                  sed -i 's|https://typst-jp.github.io/|https://typst-github-io.n4n5.dev/|g' typst-jp/website/vite.config.ts
-            - name: bun install and build
-              run: cd typst-jp/website && bun install --frozen-lockfile && bun run build || true
-            # post build steps
-            - name: Post build steps
-              run: |
-                cp -r typst/docs/assets/* typst-jp/website/dist/assets/
+                  ./deploy.sh
             - name: Upload artifact
               uses: actions/upload-pages-artifact@v3
               with:
