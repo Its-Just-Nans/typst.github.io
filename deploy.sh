@@ -42,6 +42,9 @@ cd ../..
 
 cp -r typst/assets/ website_builder/assets/
 cd website_builder/website || exit 1
+sed -i '9s|docs/||' package.json
+sed -i '9s|dist/|dist/en/|' package.json
+sed -i 's|/pagefind/pagefind|/en/pagefind/pagefind|g' src/components/ui/common/SearchWindow.tsx
 npm run build
 mv dist/ ../../dist/en/
 cd ../..
@@ -49,6 +52,8 @@ cd ../..
 rm -rf website_builder/assets/
 cp -r typst-jp.github.io/assets/ website_builder/assets/
 cd website_builder/website || exit 1
+sed -i '9s|dist/en/|dist/jp/|' package.json
+sed -i 's|/en/pagefind/pagefind|/jp/pagefind/pagefind|g' src/components/ui/common/SearchWindow.tsx
 npm run build
 mv dist/ ../../dist/jp/
 cd ../..
